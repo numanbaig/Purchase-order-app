@@ -7,6 +7,7 @@ export default function Home() {
   const [vendorName, setVendorName] = useState("");
   const [date, setDate] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleVendorNameChange = (e) => {
     setVendorName(e.target.value);
@@ -22,6 +23,7 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     const formData = new FormData();
     formData.append("vendorName", vendorName);
     formData.append("date", date);
@@ -35,6 +37,8 @@ export default function Home() {
       .catch((err) => {
         console.log('er', err);
         alert(err.response.data.message)
+      }).finally(()=>{
+        setIsLoading(false)
       });
 
   };
@@ -112,8 +116,9 @@ export default function Home() {
           <button
             type="submit"
             style={{
+              cursor:'pointer',
               width: "100px",
-              fontSize: "18px",
+              fontSize: "16px",
               height: "30px",
               backgroundColor: "blue",
               color: "white",
@@ -121,7 +126,7 @@ export default function Home() {
               border: "none",
             }}
           >
-            Save
+            { isLoading ? 'Loading...' : 'Save' }
           </button>
         </form>
       </main>
